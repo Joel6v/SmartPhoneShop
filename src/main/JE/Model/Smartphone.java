@@ -1,5 +1,10 @@
 package Model;
 
+import Model.Enum.Brand;
+import Model.Enum.Connectivity;
+import Model.Enum.MobileStandard;
+import Model.Enum.Os;
+
 import java.util.ArrayList;
 
 public class Smartphone {
@@ -15,7 +20,6 @@ public class Smartphone {
     private int batteryCapacity; //[Wh]
     private ArrayList<Connectivity> connectivity;
     private MobileStandard mobileStandard;
-
 
     public Smartphone(Brand brand, String model, double unitPrice, int ram, int screenSize, Os os,
                       int screenResolutionWidth, int screenResolutionHeight, int processorCores,
@@ -36,10 +40,10 @@ public class Smartphone {
 
     @Override
     public String toString(){
-        return brand + ", " + model + ", " + getUnitPriceString() + ", " + getRamString() + ", " +
-                getScreenSizeString() + ", " + os + ", " + getScreenResolutionWidthString() + ", " +
-                getScreenResolutionHeightString() + ", " + getProcessorCoresString() + ", " +
-                getBatteryCapacityString() + ", " + getConnectivityString() + ", " + mobileStandard;
+        return "Hersteller: " + brand.toString() + "\nModel: " + model + "\nEinzelpreis: " + getUnitPriceString() + "\nRAM: " + getRamString() +
+                "\nBildschimgrösse " + getScreenSizeString() + "\nBetriebssystem: " + os + "\nAuflösung breite: " + getScreenResolutionWidthString() +
+                "\nAuflösung höhe: " + getScreenResolutionHeightString() + "\nProzessor: " + getProcessorCoresString() + "\nBatterie: " +
+                getBatteryCapacityString() + "\nKonnektivität: " + getConnectivityString() + "\nMobilfunk Standart: " + mobileStandard;
     }
 
     public Brand getBrand() {
@@ -70,6 +74,10 @@ public class Smartphone {
         this.unitPrice = unitPrice;
     }
 
+    public void setUnitPrice(String unitPriceString) {
+        this.unitPrice = Double.parseDouble(unitPriceString.substring(0, unitPriceString.indexOf(" CHF")));
+    }
+
     public int getRam() {
         return ram;
     }
@@ -80,6 +88,10 @@ public class Smartphone {
 
     public void setRam(int ram) {
         this.ram = ram;
+    }
+
+    public void setRam(String ramString) {
+        this.ram = Integer.parseInt(ramString.substring(0, ramString.indexOf(" GiB")));
     }
 
     public int getScreenSize() {
@@ -94,12 +106,20 @@ public class Smartphone {
         this.screenSize = screenSize;
     }
 
+    public void setScreenSize(String screenSizeString) {
+        this.screenSize = Integer.parseInt(screenSizeString.substring(0, screenSizeString.indexOf(" inch")));
+    }
+
     public Os getOs() {
         return os;
     }
 
     public void setOs(Os os) {
         this.os = os;
+    }
+
+    public void setOs(String osString) {
+        this.os = Os.convertString(osString);
     }
 
     public int getScreenResolutionWidth() {
@@ -114,6 +134,10 @@ public class Smartphone {
         this.screenResolutionWidth = screenResolutionWidth;
     }
 
+    public void setScreenResolutionWidth(String screenResolutionWidthString) {
+        this.screenResolutionWidth = Integer.parseInt(screenResolutionWidthString.substring(0, screenResolutionWidthString.indexOf(" pixels width")));
+    }
+
     public int getScreenResolutionHeight() {
         return screenResolutionHeight;
     }
@@ -124,6 +148,10 @@ public class Smartphone {
 
     public void setScreenResolutionHeight(int screenResolutionHeight) {
         this.screenResolutionHeight = screenResolutionHeight;
+    }
+
+    public void setScreenResolutionHeight(String screenResolutionHeightString) {
+        this.screenResolutionHeight = Integer.parseInt(screenResolutionHeightString.substring(0, screenResolutionHeightString.indexOf(" pixels height")));
     }
 
     public int getProcessorCores() {
@@ -142,6 +170,10 @@ public class Smartphone {
         this.processorCores = processorCores;
     }
 
+    public void setProcessorCores(String processorCoresString) {
+        this.processorCores = Integer.parseInt(processorCoresString.substring(0, processorCoresString.indexOf(" core")));
+    }
+
     public int getBatteryCapacity() {
         return batteryCapacity;
     }
@@ -152,6 +184,10 @@ public class Smartphone {
 
     public void setBatteryCapacity(int batteryCapacity) {
         this.batteryCapacity = batteryCapacity;
+    }
+
+    public void setBatteryCapacity(String batteryCapacityString) {
+        this.batteryCapacity = Integer.parseInt(batteryCapacityString.substring(0, batteryCapacityString.indexOf(" Wh")));
     }
 
     public ArrayList<Connectivity> getConnectivity() {
@@ -171,11 +207,24 @@ public class Smartphone {
         this.connectivity = connectivity;
     }
 
+    public void setConnectivity(String connectivityString) {
+        String[] connectivitySplit = connectivityString.split(", ");
+        ArrayList<Connectivity> connectivityList = new ArrayList<>(); //if an error occurs that the old list remains saved
+        for(String str : connectivitySplit){
+            connectivityList.add(Connectivity.convertString(str));
+        }
+        this.connectivity = connectivityList;
+    }
+
     public MobileStandard getMobileStandard() {
         return mobileStandard;
     }
 
     public void setMobileStandard(MobileStandard mobileStandard) {
         this.mobileStandard = mobileStandard;
+    }
+
+    public void setMobileStandard(String mobileStandardString) {
+        this.mobileStandard = MobileStandard.convertString(mobileStandardString);
     }
 }

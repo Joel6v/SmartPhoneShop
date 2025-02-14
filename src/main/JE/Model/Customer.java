@@ -1,20 +1,19 @@
 package Model;
 
-import javax.swing.text.DateFormatter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import Controller.MainController;
+import org.bson.Document;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Formatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Customer {
     private String salutation;
     private String lastName;
     private String firstName;
-    private String street;
-    private String zipCode;
-    private String city;
+    private ArrayList<Address> addresses;
     private String phoneNumberPrivate;
     private String phoneNumberMobile;
     private String email;
@@ -22,15 +21,13 @@ public class Customer {
     private String username;
     private byte[] password;
 
-    public Customer(String salutation, String lastName, String firstName, String street, String zipCode, String city,
+    public Customer(String salutation, String lastName, String firstName, ArrayList<Address> addresses,
                     String phoneNumberPrivate, String phoneNumberMobile, String email, LocalDate dateOfBirth,
                     String username, byte[] password) {
         this.salutation = salutation;
         this.lastName = lastName;
         this.firstName = firstName;
-        this.street = street;
-        this.zipCode = zipCode;
-        this.city = city;
+        this.addresses = addresses;
         this.phoneNumberPrivate = phoneNumberPrivate;
         this.phoneNumberMobile = phoneNumberMobile;
         this.email = email;
@@ -39,10 +36,15 @@ public class Customer {
         this.password = password;
     }
 
+    public Customer(){
+
+    }
+
     @Override
     public String toString(){
-        return salutation + " " + lastName + " " + firstName + ", " + street + ", " + zipCode + " " + city + ", " +
-                phoneNumberPrivate + ", " + phoneNumberMobile + ", " + email + ", " + getDateOfBirthString() + ", " + username;
+        return "Titel: " + salutation + "\nNachname: " + lastName + "\nVorname: " + firstName + "\nAdresse: " + getAddressesString() +
+                "\nTelefon privat: " + phoneNumberPrivate + "\nTelefon mobil: " + phoneNumberMobile + "\nEmail: " + email + "\nGeburtsdatum: " +
+                getDateOfBirthString() + "\nBenutzername: " + username + "\nPasswort: " + getPasswordHex();
     }
 
     public String getSalutation() {
@@ -69,28 +71,35 @@ public class Customer {
         this.firstName = firstName;
     }
 
-    public String getStreet() {
-        return street;
+    public ArrayList<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public String getAddressesString() {
+        StringBuilder sb = new StringBuilder();
+        for (Address address : addresses) {
+            sb.append(address.toString()).append(", ");
+        }
+        return sb.toString();
     }
 
-    public String getZipCode() {
-        return zipCode;
+    public ArrayList<Integer> getAddressesIndex(){
+        ArrayList<Integer> indices = new ArrayList<>();
+        for(Address address : addresses){
+            indices.add(MainController.address.getIndexElement(address));
+        }
+        return indices;
     }
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setAdresses(ArrayList<Address> addresses) {
+        this.addresses = addresses;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
+    public void setAddresses(ArrayList<Integer> indices) {
+        addresses = new ArrayList<>();
+        for(int index : indices){
+            addresses.add(MainController.address.getElement(index));
+        }
     }
 
     public String getPhoneNumberPrivate() {
@@ -122,12 +131,15 @@ public class Customer {
     }
 
     public String getDateOfBirthString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        return dateOfBirth.format(formatter);
+        return LocalDateFormatter.convertToString(dateOfBirth);
     }
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirthString) {
+        dateOfBirth = LocalDateFormatter.convertStringToDate(dateOfBirthString);
     }
 
     public String getUsername() {
@@ -144,5 +156,30 @@ public class Customer {
 
     public void setPassword(byte[] password) {
         this.password = password;
+    }
+
+    public void setPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256"); //256 bit = 32 byte
+
+            md.update(password.getBytes());
+            this.password = Arrays.copyOf(md.digest(), 32);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getPasswordHex() {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : password) {
+            hexString.append(String.format("%02X", b)); //%02X -> 2 digits
+        }
+        return hexString.toString();
+    }
+
+    public Document toDocument() {
+        return new Document("salutation", salutation).append("lastName", lastName).append("firstName", firstName)
+                .append("addresses", getAddressesIndex()).append("phoneNumberPrivate", phoneNumberPrivate).append("phoneNumberMobile", phoneNumberMobile)
+                .append("email", email).append("dateOfBirth", this.getDateOfBirthString()).append("username", username).append("password", getPasswordHex());
     }
 }

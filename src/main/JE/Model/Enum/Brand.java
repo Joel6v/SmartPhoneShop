@@ -1,4 +1,4 @@
-package Model;
+package Model.Enum;
 
 public enum Brand {
     APPLE ("Apple"),
@@ -14,6 +14,15 @@ public enum Brand {
 
     Brand(String fullName){
         this.fullName = fullName;
+    }
+
+    public static Brand convertString(String str){
+        for(Brand brand : Brand.values()){
+            if(brand.fullName.equals(str)){
+                return brand;
+            }
+        }
+        return null;
     }
 
     @Override

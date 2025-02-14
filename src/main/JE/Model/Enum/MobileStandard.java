@@ -1,4 +1,4 @@
-package Model;
+package Model.Enum;
 
 public enum MobileStandard {
     G2 ("2 G"),
@@ -15,6 +15,15 @@ public enum MobileStandard {
 
     MobileStandard(String fullName){
         this.fullName = fullName;
+    }
+
+    public static MobileStandard convertString(String str){
+        for(MobileStandard mobileStandard : MobileStandard.values()){
+            if(mobileStandard.fullName.equals(str)){
+                return mobileStandard;
+            }
+        }
+        return null;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package Model;
+package Model.Enum;
 
 public enum Connectivity {
     BLUETOOTH ("Bluetooth"),
@@ -12,6 +12,15 @@ public enum Connectivity {
 
     Connectivity(String fullName) {
         this.fullName = fullName;
+    }
+
+    public static Connectivity convertString(String str){
+        for(Connectivity connectivity : Connectivity.values()){
+            if(connectivity.fullName.equals(str)){
+                return connectivity;
+            }
+        }
+        return null;
     }
 
     @Override

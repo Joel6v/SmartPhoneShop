@@ -1,4 +1,4 @@
-package Model;
+package Model.Enum;
 
 public enum Os {
     IOS ("iOS"),
@@ -8,6 +8,15 @@ public enum Os {
 
     Os(String fullName){
         this.fullName = fullName;
+    }
+
+    public static Os convertString(String str){
+        for(Os os : Os.values()){
+            if(os.fullName.equals(str)){
+                return os;
+            }
+        }
+        return null;
     }
 
     @Override

@@ -1,35 +1,46 @@
 package Model;
 
+import org.bson.Document;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Formatter;
 
 public class Order {
     private byte[] orderNumber;
     private LocalDateTime orderDate;
+    private Address shippingAddress;
     private Customer orderedByCustomer;
-    private ArrayList<Smartphone> orderedSmartphones;
+    private ArrayList<OrderPosition> orderPositions;
     private double totalPrice;
 
-    public Order(byte[] orderNumber, LocalDateTime orderDate, Customer orderedByCustomer,
-                 ArrayList<Smartphone> orderedSmartphones, double totalPrice) {
+    public Order(byte[] orderNumber, LocalDateTime orderDate, Address shippingAddress, Customer orderedByCustomer,
+                 ArrayList<OrderPosition> orderPositions, double totalPrice) {
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
+        this.shippingAddress = shippingAddress;
         this.orderedByCustomer = orderedByCustomer;
-        this.orderedSmartphones = orderedSmartphones;
+        this.orderPositions = orderPositions;
         this.totalPrice = totalPrice;
     }
 
-    public Order(LocalDateTime orderDate, Customer orderedByCustomer, ArrayList<Smartphone> orderedSmartphones, double totalPrice) {
+    public Order(LocalDateTime orderDate, Address shippingAddress, Customer orderedByCustomer, ArrayList<OrderPosition> orderPositions, double totalPrice) {
+        setOrderNumber();
         this.orderDate = orderDate;
+        this.shippingAddress = shippingAddress;
         this.orderedByCustomer = orderedByCustomer;
-        this.orderedSmartphones = orderedSmartphones;
+        this.orderPositions = orderPositions;
         this.totalPrice = totalPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "Bestellnummer: " + getOrderNumberHex() + "\nBestelldatum: " + getOrderDate() +
+                "\nLieferadresse: " + getShippingAddress() + "\nKunde: " + "\nBestellpositionen: " +
+                getOrderPositionsString() + "\nPreis Total: " + getTotalPriceString();
     }
 
     public byte[] getOrderNumber() {
@@ -37,18 +48,18 @@ public class Order {
     }
 
     public String getOrderNumberHex(){
-        StringBuilder sb = new StringBuilder();
+        StringBuilder hexString = new StringBuilder();
         for (byte b : orderNumber) {
-            sb.append(String.format("%02x", b));
+            hexString.append(String.format("%02X", b));
         }
-        return sb.toString();
+        return hexString.toString();
     }
 
     public void setOrderNumber(){
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1"); //128 bit = 16 byte = 32 hex
 
-            String input = getOrderDateString() + orderedByCustomer + getOrderedSmartphonesString() + getTotalPriceString();
+            String input = getOrderDateString() + " " + orderedByCustomer + " " + shippingAddress + " " + getOrderPositionsString() + " " + getTotalPriceString();
             md.update(input.getBytes());
             orderNumber = Arrays.copyOf(md.digest(), 16);
         } catch (NoSuchAlgorithmException e) {
@@ -61,12 +72,23 @@ public class Order {
     }
 
     public String getOrderDateString(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-        return orderDate.format(formatter);
+        return LocalDateFormatter.convertToString(orderDate);
     }
 
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
+    }
+
+    public void setOrderDate(String orderDateString){
+        orderDate = LocalDateFormatter.convertStringToDateTime(orderDateString);
+    }
+
+    public Address getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(Address shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 
     public Customer getOrderedByCustomer() {
@@ -77,20 +99,20 @@ public class Order {
         this.orderedByCustomer = orderedByCustomer;
     }
 
-    public ArrayList<Smartphone> getOrderedSmartphones() {
-        return orderedSmartphones;
+    public ArrayList<OrderPosition> getOrderPositions() {
+        return orderPositions;
     }
 
-    public String getOrderedSmartphonesString(){
+    public String getOrderPositionsString(){
         StringBuilder sb = new StringBuilder();
-        for (Smartphone sm : orderedSmartphones) {
-            sb.append(sm.toString()).append(", ");
+        for (OrderPosition op : orderPositions) {
+            sb.append(op.toString()).append(", ");
         }
         return sb.toString();
     }
 
-    public void setOrderedSmartphones(ArrayList<Smartphone> orderedSmartphones) {
-        this.orderedSmartphones = orderedSmartphones;
+    public void setOrderPositions(ArrayList<OrderPosition> orderPositions) {
+        this.orderPositions = orderPositions;
     }
 
     public double getTotalPrice() {
@@ -103,5 +125,14 @@ public class Order {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public void setTotalPrice(String totalPriceString){
+        totalPrice = Double.parseDouble(totalPriceString.substring(0, totalPriceString.indexOf(" CHF")));
+    }
+
+    public Document toDocument(){
+        return new Document("orderNumber", getOrderNumberHex()).append("orderDate", getOrderDateString()).append("shippingAddress", shippingAddress).
+                append("orderedByCustomer", orderedByCustomer).append("orderPositions", orderPositions).append("totalPrice", totalPrice);
     }
 }
