@@ -40,6 +40,20 @@ public class Customer {
 
     }
 
+    public Customer(Document document){
+        salutation = document.getString("salutation");
+        lastName = document.getString("lastName");
+        firstName = document.getString("firstName");
+        addresses = MainController.address.getElement(document.get("addresses"));
+        //
+    }
+
+    public Document toDocument() {
+        return new Document("salutation", salutation).append("lastName", lastName).append("firstName", firstName)
+                .append("addresses", MainController.address.getIndexElement(addresses)).append("phoneNumberPrivate", phoneNumberPrivate).append("phoneNumberMobile", phoneNumberMobile)
+                .append("email", email).append("dateOfBirth", getDateOfBirthString()).append("username", username).append("password", getPasswordHex());
+    }
+
     @Override
     public String toString(){
         return "Titel: " + salutation + "\nNachname: " + lastName + "\nVorname: " + firstName + "\nAdresse: " + getAddressesString() +
@@ -83,23 +97,12 @@ public class Customer {
         return sb.toString();
     }
 
-    public ArrayList<Integer> getAddressesIndex(){
-        ArrayList<Integer> indices = new ArrayList<>();
-        for(Address address : addresses){
-            indices.add(MainController.address.getIndexElement(address));
-        }
-        return indices;
-    }
-
     public void setAdresses(ArrayList<Address> addresses) {
         this.addresses = addresses;
     }
 
     public void setAddresses(ArrayList<Integer> indices) {
-        addresses = new ArrayList<>();
-        for(int index : indices){
-            addresses.add(MainController.address.getElement(index));
-        }
+        addresses = MainController.address.getElement(indices);
     }
 
     public String getPhoneNumberPrivate() {
@@ -175,11 +178,5 @@ public class Customer {
             hexString.append(String.format("%02X", b)); //%02X -> 2 digits
         }
         return hexString.toString();
-    }
-
-    public Document toDocument() {
-        return new Document("salutation", salutation).append("lastName", lastName).append("firstName", firstName)
-                .append("addresses", getAddressesIndex()).append("phoneNumberPrivate", phoneNumberPrivate).append("phoneNumberMobile", phoneNumberMobile)
-                .append("email", email).append("dateOfBirth", this.getDateOfBirthString()).append("username", username).append("password", getPasswordHex());
     }
 }

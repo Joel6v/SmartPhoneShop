@@ -14,8 +14,24 @@ public class Controller<ModelType> {
         modelList = (ArrayList<ModelType>) repository.load();
     }
 
-    public int getIndexElement(ModelType model) {
-        return modelList.indexOf(model);
+    public int getIndexElement(ModelType element) {
+        return modelList.indexOf(element);
+    }
+
+    public ArrayList<int> getIndexElement(ArrayList<ModelType> elements){
+        ArrayList<Integer> indices = new ArrayList<>();
+        for(ModelType element : elements){
+            indices.add(getIndexElement(element));
+        }
+        return indices;
+    }
+
+    public ArrayList<ModelType> getElement(ArrayList<int> indeces) {
+        ArrayList<ModelType> elements = new ArrayList<>();
+        for(int index : indeces){
+            elements.add(getElement(index));
+        }
+        return elements;
     }
 
     public void setElement(ModelType model) {
