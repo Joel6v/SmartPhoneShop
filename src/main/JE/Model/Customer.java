@@ -37,7 +37,16 @@ public class Customer {
     }
 
     public Customer(){
-
+        salutation = "";
+        lastName = "";
+        firstName = "";
+        addresses = new ArrayList<>();
+        phoneNumberPrivate = "";
+        phoneNumberMobile = "";
+        email = "";
+        dateOfBirth = LocalDate.MIN;
+        username = "";
+        password = new byte[32];
     }
 
     public Customer(Document document){
@@ -179,9 +188,12 @@ public class Customer {
     }
 
     public void setPasswordHex(String hex){
-        for (int i = 0; i < 32; i++) {
-            password[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+        byte[] data = new byte[32];
+        for (int i = 0; i < 32; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
+                    + Character.digit(hex.charAt(i+1), 16));
         }
+        password = data;
     }
 
     public String getPasswordHex() {

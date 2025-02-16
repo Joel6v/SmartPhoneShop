@@ -1,6 +1,8 @@
 package View;
 
 import Controller.MainController;
+import Model.OrderPosition;
+import Repository.SmartphoneRepository;
 
 import java.util.Scanner;
 
@@ -44,17 +46,20 @@ public class MainView {
                 addressView.startViewLoop();
             }break;
             case "2":{
-
+                SmartphoneView smartphoneView = new SmartphoneView();
+                smartphoneView.startViewLoop();
             }break;
             case "3":{
                 CustomerView customerView = new CustomerView();
                 customerView.startViewLoop();
             }break;
             case "4":{
-
+                OrderPositionView orderPositionView =  new OrderPositionView();
+                orderPositionView.startViewLoop();
             }break;
             case "5":{
-
+                OrderView orderView = new OrderView();
+                orderView.startViewLoop();
             }break;
             case "s":{
                 MainController.saveAll();

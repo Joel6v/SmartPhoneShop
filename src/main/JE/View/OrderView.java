@@ -74,15 +74,16 @@ public class OrderView implements ISubMenu{
         System.out.println("Eingabe Bestellung");
         System.out.println();
 
-        System.out.println("Bestelldatum []: ");
+        System.out.print("Bestelldatum [dd.MM.yyyy HH:mm:ss]: ");
         order.setOrderDate(input.nextLine());
-        System.out.println("Lieferadresse [1]: ");
+        System.out.print("Lieferadresse [1]: ");
         order.setShippingAddress(MainController.address.getElement(Integer.parseInt(input.nextLine())));
-        System.out.println("Kunde [1]: ");
+        System.out.print("Kunde [1]: ");
         order.setOrderedByCustomer(MainController.customer.getElement(Integer.parseInt(input.nextLine())));
-        System.out.println("Positionen [1, 2]: ");
+        System.out.print("Positionen [1, 2]: ");
         order.setOrderPositions(addOrderPosition(input.nextLine()));
         order.setTotalPrice();
+        order.setOrderNumber();
 
         return order;
     }

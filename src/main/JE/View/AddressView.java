@@ -74,11 +74,11 @@ public class AddressView implements ISubMenu{
         System.out.println("Eingabe Address");
         System.out.println();
 
-        System.out.println("Strasse: ");
+        System.out.print("Strasse: ");
         address.setStreet(input.nextLine());
-        System.out.println("PLZ: ");
+        System.out.print("PLZ: ");
         address.setZipCode(input.nextLine());
-        System.out.println("Stadt: ");
+        System.out.print("Stadt: ");
         address.setCity(input.nextLine());
 
         return address;

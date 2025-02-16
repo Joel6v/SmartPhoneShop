@@ -14,7 +14,11 @@ public class Address { //extends Model
         this.city = city;
     }
 
-    public Address() {}
+    public Address() {
+        street = "";
+        zipCode = "";
+        city = "";
+    }
 
     public Address (Document document){
         street = document.getString("street");

@@ -39,7 +39,20 @@ public class Smartphone {
         this.mobileStandard = mobileStandard;
     }
 
-    public Smartphone(){}
+    public Smartphone(){
+        brand = Brand.APPLE;
+        model = "";
+        unitPrice = 0;
+        ram = 0;
+        screenSize = 0;
+        os = Os.IOS;
+        screenResolutionWidth = 0;
+        screenResolutionHeight = 0;
+        processorCores = 0;
+        batteryCapacity = 0;
+        connectivity = new ArrayList<>();
+        mobileStandard = MobileStandard.G2;
+    }
 
     public Smartphone(Document document){
         setBrand(document.getString("brand"));

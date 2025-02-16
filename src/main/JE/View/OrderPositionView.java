@@ -73,11 +73,11 @@ public class OrderPositionView implements ISubMenu {
         System.out.println("Eingabe");
         System.out.println();
 
-        System.out.println("Smartphone [1]: ");
+        System.out.print("Smartphone [1]: ");
         orderPosition.setOrderedSmartphone(MainController.smartphone.getElement(Integer.parseInt(input.nextLine())));
-        System.out.println("Preis [CHF]: ");
+        System.out.print("Preis [CHF]: ");
         orderPosition.setOrderedUnitPrice(input.nextInt());
-        System.out.println("Anzahl: ");
+        System.out.print("Anzahl: ");
         orderPosition.setOrderedQuantity(input.nextInt());
 
         return orderPosition;

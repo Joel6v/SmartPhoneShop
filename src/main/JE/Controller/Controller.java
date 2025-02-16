@@ -47,12 +47,16 @@ public class Controller<ModelType> {
         return modelList;
     }
 
-    public ModelType getElement(int id) throws IndexOutOfBoundsException {
-        return modelList.get(id);
+    public ModelType getElement(int index) throws IndexOutOfBoundsException {
+        if(index < modelList.size()){
+            return modelList.get(index);
+        }else{
+            return null;
+        }
     }
 
-    public void removeElement(int id) throws IndexOutOfBoundsException {
-        modelList.remove(id);
+    public void removeElement(int index) throws IndexOutOfBoundsException {
+        modelList.remove(index);
     }
 
     public void save(){

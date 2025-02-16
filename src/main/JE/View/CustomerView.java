@@ -88,7 +88,7 @@ public class CustomerView implements ISubMenu{
         customer.setPhoneNumberMobile(input.nextLine());
         System.out.print("Email: ");
         customer.setEmail(input.nextLine());
-        System.out.print("Geburtsdatum [14.12.2000]: ");
+        System.out.print("Geburtsdatum [dd.MM.yyyy]: ");
         customer.setDateOfBirth(input.nextLine());
         System.out.print("Benutzername: ");
         customer.setUsername(input.nextLine());
