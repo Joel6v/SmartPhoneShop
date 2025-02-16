@@ -26,12 +26,4 @@ public class MainController {
         orderPosition.save();
         order.save();
     }
-
-//    public static Controller<? extends Model> getController(Class<? extends Model> clazz){
-//        if(clazz.equals(Address.class)){
-//            return address;
-//        }else if(clazz.equals(Smartphone.class)){
-//
-//        }
-//    }
 }
