@@ -4,7 +4,6 @@ import Model.*;
 import Repository.*;
 
 public class MainController {
-    //This sequence must be like this because the collections must load in this sequence.
     public static Controller<Address> address;
     public static Controller<Smartphone> smartphone;
     public static Controller<Customer> customer;
@@ -12,6 +11,7 @@ public class MainController {
     public static Controller<Order> order;
 
     public static void setInstanceAll(){
+        //This sequence must be like this because the collections must load in this sequence.
         address = new Controller<Address>(new AddressRepository());
         smartphone = new Controller<Smartphone>(new SmartphoneRepository());
         customer = new Controller<Customer>(new CustomerRepository());
@@ -26,4 +26,12 @@ public class MainController {
         orderPosition.save();
         order.save();
     }
+
+//    public static Controller<? extends Model> getController(Class<? extends Model> clazz){
+//        if(clazz.equals(Address.class)){
+//            return address;
+//        }else if(clazz.equals(Smartphone.class)){
+//
+//        }
+//    }
 }

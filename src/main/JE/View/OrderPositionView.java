@@ -1,14 +1,13 @@
 package View;
 
 import Controller.MainController;
-import Model.Address;
-import Model.Customer;
+import Model.Order;
+import Model.OrderPosition;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class AddressView implements ISubMenu{
-
+public class OrderPositionView implements ISubMenu {
     private boolean closeMenu = false;
     @Override
     public void startViewLoop() {
@@ -21,7 +20,7 @@ public class AddressView implements ISubMenu{
     @Override
     public void showSubMenu() {
         System.out.println("+++++++++++++++");
-        System.out.println("Adressen");
+        System.out.println("Bestellpositionen");
         System.out.println();
         System.out.println("[1] Hinzufügen");
         System.out.println("[2] Anzeigen alle");
@@ -40,8 +39,8 @@ public class AddressView implements ISubMenu{
 
         switch(selection){
             case "1":{
-                Address address = showElementInput();
-                MainController.address.setElement(address);
+                OrderPosition orderPosition = showElementInput();
+                MainController.orderPosition.setElement(orderPosition);
             }break;
             case "2":{
                 showElement();
@@ -56,7 +55,7 @@ public class AddressView implements ISubMenu{
                 deleteElement();
             }break;
             case "s":{
-                MainController.address.save();
+                MainController.orderPosition.save();
             }break;
             case "e": {
                 closeMenu = true;
@@ -67,21 +66,21 @@ public class AddressView implements ISubMenu{
         }
     }
 
-    public Address showElementInput(){
-        Address address = new Address();
+    public OrderPosition showElementInput(){
+        OrderPosition orderPosition = new OrderPosition();
         Scanner input = new Scanner(System.in);
         System.out.println("---------------");
-        System.out.println("Eingabe Address");
+        System.out.println("Eingabe");
         System.out.println();
 
-        System.out.println("Strasse: ");
-        address.setStreet(input.nextLine());
-        System.out.println("PLZ: ");
-        address.setZipCode(input.nextLine());
-        System.out.println("Stadt: ");
-        address.setCity(input.nextLine());
+        System.out.println("Smartphone [1]: ");
+        orderPosition.setOrderedSmartphone(MainController.smartphone.getElement(Integer.parseInt(input.nextLine())));
+        System.out.println("Preis [CHF]: ");
+        orderPosition.setOrderedUnitPrice(input.nextInt());
+        System.out.println("Anzahl: ");
+        orderPosition.setOrderedQuantity(input.nextInt());
 
-        return address;
+        return orderPosition;
     }
 
     private void showElementIndex(){
@@ -91,15 +90,15 @@ public class AddressView implements ISubMenu{
         Scanner input = new Scanner(System.in);
         int index = input.nextInt();
         System.out.println();
-        System.out.println(MainController.address.getElement(index).toString());
+        System.out.println(MainController.orderPosition.getElement(index).toString());
     }
 
     private void showElement(){
         System.out.println("---------------");
         System.out.println("Ausgabe");
         System.out.println();
-        for(Address address : MainController.address.getElement()){
-            System.out.println(address.toString());
+        for(OrderPosition orderPosition : MainController.orderPosition.getElement()){
+            System.out.println(orderPosition.toString());
         }
     }
 
@@ -110,7 +109,7 @@ public class AddressView implements ISubMenu{
         System.out.print("Index: ");
         int index = input.nextInt();
         System.out.println();
-        MainController.address.setElement(index, showElementInput());
+        MainController.orderPosition.setElement(index, showElementInput());
     }
 
     private void deleteElement(){
@@ -120,6 +119,6 @@ public class AddressView implements ISubMenu{
         System.out.print("Index: ");
         int index = input.nextInt();
         System.out.println();
-        MainController.address.removeElement(index);
+        MainController.orderPosition.removeElement(index);
     }
 }

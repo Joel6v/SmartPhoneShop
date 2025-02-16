@@ -2,7 +2,7 @@ package Model;
 
 import org.bson.Document;
 
-public class Address{
+public class Address { //extends Model
     private String street;
     private String zipCode;
     private String city;

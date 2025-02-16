@@ -2,12 +2,11 @@ package View;
 
 import Controller.MainController;
 import Model.Address;
-import Model.Customer;
+import Model.Smartphone;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
-public class AddressView implements ISubMenu{
+public class SmartphoneView implements ISubMenu{
 
     private boolean closeMenu = false;
     @Override
@@ -21,7 +20,7 @@ public class AddressView implements ISubMenu{
     @Override
     public void showSubMenu() {
         System.out.println("+++++++++++++++");
-        System.out.println("Adressen");
+        System.out.println("Smartphones");
         System.out.println();
         System.out.println("[1] Hinzufügen");
         System.out.println("[2] Anzeigen alle");
@@ -40,8 +39,8 @@ public class AddressView implements ISubMenu{
 
         switch(selection){
             case "1":{
-                Address address = showElementInput();
-                MainController.address.setElement(address);
+                Smartphone smartphone = showElementInput();
+                MainController.smartphone.setElement(smartphone);
             }break;
             case "2":{
                 showElement();
@@ -56,7 +55,7 @@ public class AddressView implements ISubMenu{
                 deleteElement();
             }break;
             case "s":{
-                MainController.address.save();
+                MainController.smartphone.save();
             }break;
             case "e": {
                 closeMenu = true;
@@ -67,21 +66,39 @@ public class AddressView implements ISubMenu{
         }
     }
 
-    public Address showElementInput(){
-        Address address = new Address();
+    public Smartphone showElementInput(){
+        Smartphone smartphone = new Smartphone();
         Scanner input = new Scanner(System.in);
         System.out.println("---------------");
-        System.out.println("Eingabe Address");
+        System.out.println("Eingabe Smartphones");
         System.out.println();
 
-        System.out.println("Strasse: ");
-        address.setStreet(input.nextLine());
-        System.out.println("PLZ: ");
-        address.setZipCode(input.nextLine());
-        System.out.println("Stadt: ");
-        address.setCity(input.nextLine());
+        System.out.println("Marke: ");
+        smartphone.setBrand(input.nextLine());
+        System.out.println("Modell: ");
+        smartphone.setModel(input.nextLine());
+        System.out.println("Preis [CHF]: ");
+        smartphone.setUnitPrice(input.nextInt());
+        System.out.println("RAM [GiB]: ");
+        smartphone.setRam(input.nextInt());
+        System.out.println("Bildschirm [Zoll]: ");
+        smartphone.setScreenSize(input.nextInt());
+        System.out.println("Betriebssystem: ");
+        smartphone.setOs(input.nextLine());
+        System.out.println("Bildschirmgrösse Breite [Pixel]: ");
+        smartphone.setScreenResolutionWidth(input.nextInt());
+        System.out.println("Bildschirmgrösse Höhe [Pixel]: ");
+        smartphone.setScreenResolutionHeight(input.nextInt());
+        System.out.println("Prozessor Kerne Anz.: ");
+        smartphone.setProcessorCores(input.nextInt());
+        System.out.println("Batterie Grösse [Wh]: ");
+        smartphone.setBatteryCapacity(input.nextInt());
+        System.out.println("Konnektivität [NFC, WLAN]: ");
+        smartphone.setConnectivity(input.nextLine());
+        System.out.println("Mobilfunktstandart: ");
+        smartphone.setMobileStandard(input.nextLine());
 
-        return address;
+        return smartphone;
     }
 
     private void showElementIndex(){
@@ -91,15 +108,15 @@ public class AddressView implements ISubMenu{
         Scanner input = new Scanner(System.in);
         int index = input.nextInt();
         System.out.println();
-        System.out.println(MainController.address.getElement(index).toString());
+        System.out.println(MainController.smartphone.getElement(index).toString());
     }
 
     private void showElement(){
         System.out.println("---------------");
         System.out.println("Ausgabe");
         System.out.println();
-        for(Address address : MainController.address.getElement()){
-            System.out.println(address.toString());
+        for(Smartphone smartphone : MainController.smartphone.getElement()){
+            System.out.println(smartphone.toString());
         }
     }
 
@@ -110,7 +127,7 @@ public class AddressView implements ISubMenu{
         System.out.print("Index: ");
         int index = input.nextInt();
         System.out.println();
-        MainController.address.setElement(index, showElementInput());
+        MainController.smartphone.setElement(index, showElementInput());
     }
 
     private void deleteElement(){
@@ -120,6 +137,6 @@ public class AddressView implements ISubMenu{
         System.out.print("Index: ");
         int index = input.nextInt();
         System.out.println();
-        MainController.address.removeElement(index);
+        MainController.smartphone.removeElement(index);
     }
 }

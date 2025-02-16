@@ -152,6 +152,13 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
+    public void setTotalPrice(){
+        double totalPrice = 0;
+        for (OrderPosition op : orderPositions) {
+            totalPrice += op.getOrderedUnitPrice() * op.getOrderedQuantity();
+        }
+    }
+
     public void setTotalPrice(String totalPriceString){
         totalPrice = Double.parseDouble(totalPriceString.substring(0, totalPriceString.indexOf(" CHF")));
     }

@@ -27,7 +27,7 @@ public class CustomerView implements ISubMenu{
         System.out.println();
         System.out.println("[1] Hinzufügen");
         System.out.println("[2] Anzeigen alle");
-        System.out.println("[3] Anzeigen mit Id");
+        System.out.println("[3] Anzeigen mit Index");
         System.out.println("[4] Bearbeiten");
         System.out.println("[5] Löschen");
         System.out.println("[s] Speichern");
@@ -88,7 +88,7 @@ public class CustomerView implements ISubMenu{
         customer.setPhoneNumberMobile(input.nextLine());
         System.out.print("Email: ");
         customer.setEmail(input.nextLine());
-        System.out.print("Geburtsdatum: ");
+        System.out.print("Geburtsdatum [14.12.2000]: ");
         customer.setDateOfBirth(input.nextLine());
         System.out.print("Benutzername: ");
         customer.setUsername(input.nextLine());

@@ -1,13 +1,13 @@
 package View;
 
 import Controller.MainController;
-import Model.Address;
-import Model.Customer;
+import Model.Order;
+import Model.OrderPosition;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class AddressView implements ISubMenu{
+public class OrderView implements ISubMenu{
 
     private boolean closeMenu = false;
     @Override
@@ -21,7 +21,7 @@ public class AddressView implements ISubMenu{
     @Override
     public void showSubMenu() {
         System.out.println("+++++++++++++++");
-        System.out.println("Adressen");
+        System.out.println("Bestellungen");
         System.out.println();
         System.out.println("[1] Hinzufügen");
         System.out.println("[2] Anzeigen alle");
@@ -40,8 +40,8 @@ public class AddressView implements ISubMenu{
 
         switch(selection){
             case "1":{
-                Address address = showElementInput();
-                MainController.address.setElement(address);
+                Order order = showElementInput();
+                MainController.order.setElement(order);
             }break;
             case "2":{
                 showElement();
@@ -56,7 +56,7 @@ public class AddressView implements ISubMenu{
                 deleteElement();
             }break;
             case "s":{
-                MainController.address.save();
+                MainController.order.save();
             }break;
             case "e": {
                 closeMenu = true;
@@ -67,21 +67,35 @@ public class AddressView implements ISubMenu{
         }
     }
 
-    public Address showElementInput(){
-        Address address = new Address();
+    public Order showElementInput(){
+        Order order = new Order();
         Scanner input = new Scanner(System.in);
         System.out.println("---------------");
-        System.out.println("Eingabe Address");
+        System.out.println("Eingabe Bestellung");
         System.out.println();
 
-        System.out.println("Strasse: ");
-        address.setStreet(input.nextLine());
-        System.out.println("PLZ: ");
-        address.setZipCode(input.nextLine());
-        System.out.println("Stadt: ");
-        address.setCity(input.nextLine());
+        System.out.println("Bestelldatum []: ");
+        order.setOrderDate(input.nextLine());
+        System.out.println("Lieferadresse [1]: ");
+        order.setShippingAddress(MainController.address.getElement(Integer.parseInt(input.nextLine())));
+        System.out.println("Kunde [1]: ");
+        order.setOrderedByCustomer(MainController.customer.getElement(Integer.parseInt(input.nextLine())));
+        System.out.println("Positionen [1, 2]: ");
+        order.setOrderPositions(addOrderPosition(input.nextLine()));
+        order.setTotalPrice();
 
-        return address;
+        return order;
+    }
+
+    private ArrayList<OrderPosition> addOrderPosition(String input) throws NumberFormatException, IndexOutOfBoundsException {
+        ArrayList<OrderPosition> orderPositions = new ArrayList<>();
+        String[] indexes = input.split(" ,");
+
+        for(String index : indexes){
+            orderPositions.add(MainController.orderPosition.getElement(Integer.parseInt(index)));
+        }
+
+        return orderPositions;
     }
 
     private void showElementIndex(){
@@ -91,15 +105,15 @@ public class AddressView implements ISubMenu{
         Scanner input = new Scanner(System.in);
         int index = input.nextInt();
         System.out.println();
-        System.out.println(MainController.address.getElement(index).toString());
+        System.out.println(MainController.order.getElement(index).toString());
     }
 
     private void showElement(){
         System.out.println("---------------");
         System.out.println("Ausgabe");
         System.out.println();
-        for(Address address : MainController.address.getElement()){
-            System.out.println(address.toString());
+        for(Order order : MainController.order.getElement()){
+            System.out.println(order.toString());
         }
     }
 
@@ -110,7 +124,7 @@ public class AddressView implements ISubMenu{
         System.out.print("Index: ");
         int index = input.nextInt();
         System.out.println();
-        MainController.address.setElement(index, showElementInput());
+        MainController.order.setElement(index, showElementInput());
     }
 
     private void deleteElement(){
@@ -120,6 +134,6 @@ public class AddressView implements ISubMenu{
         System.out.print("Index: ");
         int index = input.nextInt();
         System.out.println();
-        MainController.address.removeElement(index);
+        MainController.order.removeElement(index);
     }
 }
