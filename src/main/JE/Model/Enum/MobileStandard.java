@@ -17,7 +17,7 @@ public enum MobileStandard {
         this.fullName = fullName;
     }
 
-    public static MobileStandard convertString(String str){
+    public static MobileStandard convertFromString(String str){
         for(MobileStandard mobileStandard : MobileStandard.values()){
             if(mobileStandard.fullName.equals(str)){
                 return mobileStandard;

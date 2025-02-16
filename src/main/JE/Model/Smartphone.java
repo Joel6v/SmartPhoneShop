@@ -4,6 +4,7 @@ import Model.Enum.Brand;
 import Model.Enum.Connectivity;
 import Model.Enum.MobileStandard;
 import Model.Enum.Os;
+import org.bson.Document;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,28 @@ public class Smartphone {
         this.mobileStandard = mobileStandard;
     }
 
+    public Smartphone(Document document){
+        setBrand(document.getString("brand"));
+        model = document.getString("model");
+        unitPrice = document.getDouble("unitPrice");
+        ram = document.getInteger("ram");
+        screenSize = document.getInteger("screenSize");
+        setOs(document.getString("os"));
+        screenResolutionWidth = document.getInteger("screenResolutionWidth");
+        screenResolutionHeight = document.getInteger("screenResolutionHeight");
+        processorCores = document.getInteger("processorCores");
+        batteryCapacity = document.getInteger("batteryCapacity");
+        setConnectivity(document.getString("connectivity"));
+        setMobileStandard(document.getString("mobileStandard"));
+    }
+
+    public Document toDocument(){
+        return new Document("brand", brand.toString()).append("model", model).append("unitPrice", unitPrice).append("ram", ram)
+                .append("screenSize", screenSize).append("os", os.toString()).append("screenResolutionWidth", screenResolutionWidth).
+                append("screenResolutionHeight", screenResolutionHeight).append("processorCores", processorCores).
+                append("batteryCapacity", batteryCapacity).append("connectivity", getConnectivityString()).append("mobileStandard", mobileStandard.toString());
+    }
+
     @Override
     public String toString(){
         return "Hersteller: " + brand.toString() + "\nModel: " + model + "\nEinzelpreis: " + getUnitPriceString() + "\nRAM: " + getRamString() +
@@ -52,6 +75,10 @@ public class Smartphone {
 
     public void setBrand(Brand brand) {
         this.brand = brand;
+    }
+
+    public void setBrand(String brand){
+        this.brand = Brand.convertFromString(brand);
     }
 
     public String getModel() {
@@ -119,7 +146,7 @@ public class Smartphone {
     }
 
     public void setOs(String osString) {
-        this.os = Os.convertString(osString);
+        this.os = Os.convertFromString(osString);
     }
 
     public int getScreenResolutionWidth() {
@@ -211,7 +238,7 @@ public class Smartphone {
         String[] connectivitySplit = connectivityString.split(", ");
         ArrayList<Connectivity> connectivityList = new ArrayList<>(); //if an error occurs that the old list remains saved
         for(String str : connectivitySplit){
-            connectivityList.add(Connectivity.convertString(str));
+            connectivityList.add(Connectivity.convertFromString(str));
         }
         this.connectivity = connectivityList;
     }
@@ -225,6 +252,6 @@ public class Smartphone {
     }
 
     public void setMobileStandard(String mobileStandardString) {
-        this.mobileStandard = MobileStandard.convertString(mobileStandardString);
+        this.mobileStandard = MobileStandard.convertFromString(mobileStandardString);
     }
 }

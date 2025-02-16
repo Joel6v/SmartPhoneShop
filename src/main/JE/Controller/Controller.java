@@ -18,7 +18,7 @@ public class Controller<ModelType> {
         return modelList.indexOf(element);
     }
 
-    public ArrayList<int> getIndexElement(ArrayList<ModelType> elements){
+    public ArrayList<Integer> getIndexElement(ArrayList<ModelType> elements){
         ArrayList<Integer> indices = new ArrayList<>();
         for(ModelType element : elements){
             indices.add(getIndexElement(element));
@@ -26,7 +26,7 @@ public class Controller<ModelType> {
         return indices;
     }
 
-    public ArrayList<ModelType> getElement(ArrayList<int> indeces) {
+    public ArrayList<ModelType> getElement(ArrayList<Integer> indeces) {
         ArrayList<ModelType> elements = new ArrayList<>();
         for(int index : indeces){
             elements.add(getElement(index));

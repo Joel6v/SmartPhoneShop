@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.MainController;
 import org.bson.Document;
 
 import java.security.MessageDigest;
@@ -36,6 +37,22 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
+    public Order(Document document){
+        setOrderNumber(document.getString("orderNumber"));
+        setOrderDate(document.getString("orderDate"));
+        shippingAddress = MainController.address.getElement(document.getInteger("shippingAddress"));
+        orderedByCustomer = MainController.customer.getElement(document.getInteger("orderedByCustomer"));
+        ArrayList<Integer> orderPositionId = (ArrayList<Integer>) document.get("orderPositions");
+        orderPositions = MainController.orderPosition.getElement(orderPositionId);
+        totalPrice = document.getDouble("totalPrice");
+    }
+
+    public Document toDocument(){
+        return new Document("orderNumber", getOrderNumberHex()).append("orderDate", getOrderDateString()).
+                append("shippingAddress", MainController.address.getIndexElement(shippingAddress)).append("orderedByCustomer", MainController.customer.getIndexElement(orderedByCustomer)).
+                append("orderPositions", MainController.orderPosition.getIndexElement(orderPositions)).append("totalPrice", totalPrice);
+    }
+
     @Override
     public String toString() {
         return "Bestellnummer: " + getOrderNumberHex() + "\nBestelldatum: " + getOrderDate() +
@@ -53,6 +70,12 @@ public class Order {
             hexString.append(String.format("%02X", b));
         }
         return hexString.toString();
+    }
+
+    public void setOrderNumber(String hex) {
+        for (int i = 0; i < 16; i++) {
+            orderNumber[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+        }
     }
 
     public void setOrderNumber(){
@@ -129,10 +152,5 @@ public class Order {
 
     public void setTotalPrice(String totalPriceString){
         totalPrice = Double.parseDouble(totalPriceString.substring(0, totalPriceString.indexOf(" CHF")));
-    }
-
-    public Document toDocument(){
-        return new Document("orderNumber", getOrderNumberHex()).append("orderDate", getOrderDateString()).append("shippingAddress", shippingAddress).
-                append("orderedByCustomer", orderedByCustomer).append("orderPositions", orderPositions).append("totalPrice", totalPrice);
     }
 }

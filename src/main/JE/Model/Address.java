@@ -14,6 +14,16 @@ public class Address extends Model {
         this.city = city;
     }
 
+    public Address (Document document){
+        street = document.getString("street");
+        zipCode = document.getString("zipCode");
+        city = document.getString("city");
+    }
+
+    public Document toDocument() {
+        return new Document("street", street).append("zipCode", zipCode).append("city", city);
+    }
+
     @Override
     public String toString(){
         return "Strasse: " + street + "\nPLZ: " + zipCode + "\nStadt: " + city;
@@ -46,9 +56,5 @@ public class Address extends Model {
     @Override
     public String getCollectionName() {
         return "address";
-    }
-
-    public Document toDocument() {
-        return new Document("street", street).append("zipCode", zipCode).append("city", city);
     }
 }

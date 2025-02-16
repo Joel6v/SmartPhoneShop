@@ -16,7 +16,7 @@ public enum Brand {
         this.fullName = fullName;
     }
 
-    public static Brand convertString(String str){
+    public static Brand convertFromString(String str){
         for(Brand brand : Brand.values()){
             if(brand.fullName.equals(str)){
                 return brand;

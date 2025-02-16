@@ -14,7 +14,7 @@ public enum Connectivity {
         this.fullName = fullName;
     }
 
-    public static Connectivity convertString(String str){
+    public static Connectivity convertFromString(String str){
         for(Connectivity connectivity : Connectivity.values()){
             if(connectivity.fullName.equals(str)){
                 return connectivity;

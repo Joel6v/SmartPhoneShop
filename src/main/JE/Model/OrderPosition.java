@@ -1,5 +1,8 @@
 package Model;
 
+import Controller.MainController;
+import org.bson.Document;
+
 public class OrderPosition {
     private Smartphone orderedSmartphone;
     private int orderedUnitPrice;
@@ -9,6 +12,17 @@ public class OrderPosition {
         this.orderedSmartphone = orderedSmartphone;
         this.orderedUnitPrice = orderedUnitPrice;
         this.orderedQuantity = orderedQuantity;
+    }
+
+    public OrderPosition(Document document) {
+        orderedSmartphone = MainController.smartphone.getElement(document.getInteger("orderedSmartphone"));
+        orderedUnitPrice = document.getInteger("orderedUnitPrice");
+        orderedQuantity = document.getInteger("orderedQuantity");
+    }
+
+    public Document toDocument(){
+        return new Document("orderedSmartphone", MainController.smartphone.getIndexElement(orderedSmartphone)).
+                append("orderedUnitPrice", orderedUnitPrice).append("orderedQuantity", orderedQuantity);
     }
 
     @Override

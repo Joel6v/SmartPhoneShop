@@ -1,8 +1,10 @@
 package Model;
 
 import Controller.MainController;
+import com.sun.tools.javac.Main;
 import org.bson.Document;
 
+import javax.print.Doc;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
@@ -44,8 +46,14 @@ public class Customer {
         salutation = document.getString("salutation");
         lastName = document.getString("lastName");
         firstName = document.getString("firstName");
-        addresses = MainController.address.getElement(document.get("addresses"));
-        //
+        ArrayList<Integer> addressesId = (ArrayList<Integer>) document.get("addresses");
+        addresses = MainController.address.getElement(addressesId);
+        phoneNumberPrivate = document.getString("phoneNumberPrivate");
+        phoneNumberMobile = document.getString("phoneNumberMobile");
+        email = document.getString("email");
+        setDateOfBirth(document.getString("dateOfBirth"));
+        username = document.getString("username");
+        setPasswordHex(document.getString("password"));
     }
 
     public Document toDocument() {
@@ -169,6 +177,12 @@ public class Customer {
             this.password = Arrays.copyOf(md.digest(), 32);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setPasswordHex(String hex){
+        for (int i = 0; i < 32; i++) {
+            password[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
     }
 

@@ -10,7 +10,7 @@ public enum Os {
         this.fullName = fullName;
     }
 
-    public static Os convertString(String str){
+    public static Os convertFromString(String str){
         for(Os os : Os.values()){
             if(os.fullName.equals(str)){
                 return os;
