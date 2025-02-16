@@ -2,7 +2,7 @@ package Model;
 
 import org.bson.Document;
 
-public class Address extends Model {
+public class Address{
     private String street;
     private String zipCode;
     private String city;
@@ -13,6 +13,8 @@ public class Address extends Model {
         this.zipCode = zipCode;
         this.city = city;
     }
+
+    public Address() {}
 
     public Address (Document document){
         street = document.getString("street");
@@ -51,10 +53,5 @@ public class Address extends Model {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    @Override
-    public String getCollectionName() {
-        return "address";
     }
 }

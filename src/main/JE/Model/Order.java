@@ -37,6 +37,8 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
+    public Order(){}
+
     public Order(Document document){
         setOrderNumber(document.getString("orderNumber"));
         setOrderDate(document.getString("orderDate"));

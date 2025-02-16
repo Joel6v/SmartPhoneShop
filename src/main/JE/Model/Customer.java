@@ -1,10 +1,8 @@
 package Model;
 
 import Controller.MainController;
-import com.sun.tools.javac.Main;
 import org.bson.Document;
 
-import javax.print.Doc;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
@@ -105,11 +103,11 @@ public class Customer {
         return sb.toString();
     }
 
-    public void setAdresses(ArrayList<Address> addresses) {
+    public void setAddresses(ArrayList<Address> addresses) {
         this.addresses = addresses;
     }
 
-    public void setAddresses(ArrayList<Integer> indices) {
+    public void setAddressesIndices(ArrayList<Integer> indices) {
         addresses = MainController.address.getElement(indices);
     }
 

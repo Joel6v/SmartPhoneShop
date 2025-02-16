@@ -11,7 +11,7 @@ public class Controller<ModelType> {
 
     public Controller(Repository repository) {
         this.repository = repository;
-        modelList = (ArrayList<ModelType>) repository.load();
+        modelList = repository.load();
     }
 
     public int getIndexElement(ModelType element) {
@@ -55,6 +55,6 @@ public class Controller<ModelType> {
     }
 
     public void save(){
-        repository.save((ArrayList<Objects>) modelList);
+        repository.save(modelList);
     }
 }

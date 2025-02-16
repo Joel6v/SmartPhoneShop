@@ -39,6 +39,8 @@ public class Smartphone {
         this.mobileStandard = mobileStandard;
     }
 
+    public Smartphone(){}
+
     public Smartphone(Document document){
         setBrand(document.getString("brand"));
         model = document.getString("model");

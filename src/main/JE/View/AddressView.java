@@ -1,29 +1,27 @@
 package View;
 
-import Controller.*;
+import Controller.MainController;
 import Model.Address;
 import Model.Customer;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CustomerView implements ISubMenu{
-
-    public CustomerView() {
-    }
+public class AddressView implements ISubMenu{
 
     private boolean closeMenu = false;
     @Override
-    public void startViewLoop(){
-        while(!closeMenu){
+    public void startViewLoop() {
+        while(!closeMenu) {
             showSubMenu();
             selectSubMain();
         }
     }
 
-    public void showSubMenu(){
+    @Override
+    public void showSubMenu() {
         System.out.println("+++++++++++++++");
-        System.out.println("Kunden");
+        System.out.println("Adressen");
         System.out.println();
         System.out.println("[1] Hinzufügen");
         System.out.println("[2] Anzeigen alle");
@@ -34,14 +32,16 @@ public class CustomerView implements ISubMenu{
         System.out.println("[e] Zurück");
     }
 
-    public void selectSubMain(){
+    @Override
+    public void selectSubMain() {
         System.out.print("Auswahl: ");
         Scanner scanner = new Scanner(System.in);
         String selection = scanner.nextLine();
 
         switch(selection){
             case "1":{
-                MainController.customer.setElement(showElementInput());
+                Address address = showElementInput();
+                MainController.address.setElement(address);
             }break;
             case "2":{
                 showElement();
@@ -56,7 +56,7 @@ public class CustomerView implements ISubMenu{
                 deleteElement();
             }break;
             case "s":{
-                MainController.customer.save();
+                MainController.address.save();
             }break;
             case "e": {
                 closeMenu = true;
@@ -67,46 +67,21 @@ public class CustomerView implements ISubMenu{
         }
     }
 
-    public Customer showElementInput(){
-        Customer customer = new Customer();
+    public Address showElementInput(){
+        Address address = new Address();
         Scanner input = new Scanner(System.in);
         System.out.println("---------------");
-        System.out.println("Eingabe Kunde");
+        System.out.println("Eingabe Address");
         System.out.println();
 
-        System.out.print("Titel: ");
-        customer.setSalutation(input.nextLine());
-        System.out.print("Nachname: ");
-        customer.setLastName(input.nextLine());
-        System.out.print("Vorname: ");
-        customer.setFirstName(input.nextLine());
-        System.out.print("Addressen [1, 2]: ");
-        customer.setAddresses(addAddress(input.nextLine()));
-        System.out.print("Telefon privat: ");
-        customer.setPhoneNumberPrivate(input.nextLine());
-        System.out.print("Telefon mobil: ");
-        customer.setPhoneNumberMobile(input.nextLine());
-        System.out.print("Email: ");
-        customer.setEmail(input.nextLine());
-        System.out.print("Geburtsdatum: ");
-        customer.setDateOfBirth(input.nextLine());
-        System.out.print("Benutzername: ");
-        customer.setUsername(input.nextLine());
-        System.out.print("Passwort: ");
-        customer.setPassword(input.nextLine());
+        System.out.println("Strasse: ");
+        address.setStreet(input.nextLine());
+        System.out.println("PLZ: ");
+        address.setZipCode(input.nextLine());
+        System.out.println("Stadt: ");
+        address.setCity(input.nextLine());
 
-        return customer;
-    }
-
-    private ArrayList<Address> addAddress(String input) throws NumberFormatException, IndexOutOfBoundsException {
-        ArrayList<Address> addresses = new ArrayList<>();
-        String[] indexes = input.split(" ,");
-
-        for(String index : indexes){
-            addresses.add(MainController.address.getElement(Integer.parseInt(index)));
-        }
-
-        return addresses;
+        return address;
     }
 
     private void showElementIndex(){
@@ -116,15 +91,15 @@ public class CustomerView implements ISubMenu{
         Scanner input = new Scanner(System.in);
         int index = input.nextInt();
         System.out.println();
-        System.out.println(MainController.customer.getElement(index).toString());
+        System.out.println(MainController.address.getElement(index).toString());
     }
 
     private void showElement(){
         System.out.println("---------------");
         System.out.println("Ausgabe");
         System.out.println();
-        for(Customer customer : MainController.customer.getElement()){
-            System.out.println(customer.toString());
+        for(Address address : MainController.address.getElement()){
+            System.out.println(address.toString());
         }
     }
 
@@ -135,7 +110,7 @@ public class CustomerView implements ISubMenu{
         System.out.print("Index: ");
         int index = input.nextInt();
         System.out.println();
-        MainController.customer.setElement(index, showElementInput());
+        MainController.address.setElement(index, showElementInput());
     }
 
     private void deleteElement(){
@@ -145,6 +120,6 @@ public class CustomerView implements ISubMenu{
         System.out.print("Index: ");
         int index = input.nextInt();
         System.out.println();
-        MainController.customer.removeElement(index);
+        MainController.address.removeElement(index);
     }
 }

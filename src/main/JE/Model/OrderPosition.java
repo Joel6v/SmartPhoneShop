@@ -14,6 +14,8 @@ public class OrderPosition {
         this.orderedQuantity = orderedQuantity;
     }
 
+    public OrderPosition(){}
+
     public OrderPosition(Document document) {
         orderedSmartphone = MainController.smartphone.getElement(document.getInteger("orderedSmartphone"));
         orderedUnitPrice = document.getInteger("orderedUnitPrice");

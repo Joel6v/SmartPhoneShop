@@ -1,7 +1,7 @@
 package View;
 
 public interface ISubMenu {
-    void startView();
+    void startViewLoop();
     void showSubMenu();
     void selectSubMain();
 }
